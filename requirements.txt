@@ -1,0 +1,6 @@
+cognee==0.1.39
+numpy==1.26.4
+pandas==2.2.3
+pyyaml>=6.0.0
+openai>=1.0.0
+python-dotenv>=1.0.0
