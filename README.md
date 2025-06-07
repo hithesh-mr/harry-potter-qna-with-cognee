@@ -158,11 +158,18 @@ sequenceDiagram
 - Node.js (for development)
 - OpenAI API key
 
-### Installation Steps
+## 🚀 Installation Steps
+
+### Prerequisites
+- Python 3.8 or higher
+- Git
+- OpenAI API key (get one from [OpenAI](https://platform.openai.com/api-keys))
+
+### Setup Instructions
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/your-username/harry-potter-qna-with-cognee.git
    cd harry-potter-qna-with-cognee
    ```
 
@@ -170,33 +177,55 @@ sequenceDiagram
    ```bash
    # Create and activate virtual environment
    python -m venv .venv
-   .venv\Scripts\activate  # Windows
-   # OR
-   source .venv/bin/activate  # macOS/Linux
    
-   # Install dependencies
-   pip install -r requirements.txt
+   # On Windows:
+   .venv\Scripts\activate
+   
+   # On macOS/Linux:
+   # source .venv/bin/activate
    ```
 
-3. **Configure environment variables**
-   Create a `.env` file in the root directory:
+3. **Install dependencies**
+   ```bash
+   # Install core requirements
+   pip install -r requirements.txt
+   
+   # Install Cognee SDK (this might take a few minutes)
+   pip install cognee==0.1.39
+   
+   # Install additional required packages
+   pip install openai python-dotenv fastapi uvicorn
+   
+   # If you encounter SSL errors, install certifi:
+   # pip install certifi
+   ```
+
+4. **Configure environment variables**
+   Create a `.env` file in the root directory with your OpenAI API key:
    ```env
    LLM_API_KEY=your_openai_api_key_here
    ```
 
-4. **Initialize the knowledge graph**
+5. **Run the application**
    ```bash
-   python -m server.app
-   ```
-   The server will start and initialize the knowledge graph with Harry Potter data.
-
-5. **Start the development server**
-   ```bash
+   # Start the FastAPI server
    uvicorn server.app:app --reload
    ```
+   
+   The server will start on `http://127.0.0.1:8000`
 
-6. **Open the application**
-   Navigate to `http://localhost:8000` in your web browser.
+6. **Initialize the knowledge graph**
+   In a new terminal, run:
+   ```bash
+   curl -X POST http://127.0.0.1:8000/api/initialize
+   ```
+   
+   This will start building the knowledge graph from the Harry Potter books. The first-time initialization may take several minutes.
+
+7. **Access the application**
+   Open your web browser and navigate to `http://localhost:8000`
+   - The API documentation will be available at `http://localhost:8000/docs`
+   - The knowledge graph visualization will be available at `http://localhost:8000/graph`
 
 ## 🏛️ Class Structure
 
