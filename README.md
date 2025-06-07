@@ -227,74 +227,61 @@ sequenceDiagram
    - The API documentation will be available at `http://localhost:8000/docs`
    - The knowledge graph visualization will be available at `http://localhost:8000/graph`
 
-## 🏛️ Class Structure
+# 🏛️ Class Structure
 
-### System Class Diagram
+## 📘 System Class Diagram
 
 ```mermaid
 classDiagram
-    class FastAPI_App {
-        +app: FastAPI
-        +api_router: APIRouter
-        +add_middleware()
-        +include_router()
-        +startup_event()
-    }
-    
-    class KnowledgeGraphManager {
-        +is_initialized: bool
-        +is_initializing: bool
-        +initialization_progress: int
-        +load_and_cognify(data_dir: Path) Dict[str, Any]
-        +get_status() Dict[str, Any]
-        +search_knowledge_graph(question: str) Dict[str, Any]
-    }
-    
-    class QuestionRequest {
-        +question: str
-    }
-    
-    class AnswerResponse {
-        +answer: str
-        +sources: List[Dict[str, str]]
-    }
-    
-    class AskRouter {
-        +router: APIRouter
-        +ask_question(request: QuestionRequest) Dict[str, Any]
-    }
-    
-    class CogneeIntegration {
-        +search(query_type, query_text) Any
-        +process_text(text: str) Any
-    }
-    
-    class OpenAI_Client {
-        +generate_completion(prompt: str) str
-        +create_embeddings(text: str) List[float]
-    }
-    
-    %% Relationships
-    FastAPI_App --> KnowledgeGraphManager : manages
-    FastAPI_App --> AskRouter : includes
-    AskRouter --> QuestionRequest : uses
-    AskRouter --> AnswerResponse : returns
-    AskRouter --> KnowledgeGraphManager : queries
-    KnowledgeGraphManager --> CogneeIntegration : uses
-    CogneeIntegration --> OpenAI_Client : depends on
-    
-    %% Styles
-    classDef app fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef manager fill:#bbf,stroke:#333,stroke-width:2px;
-    classDef model fill:#f96,stroke:#333,stroke-width:2px;
-    classDef router fill:#6f9,stroke:#333,stroke-width:2px;
-    classDef integration fill:#9cf,stroke:#333,stroke-width:2px;
-    
-    class FastAPI_App app;
-    class KnowledgeGraphManager manager;
-    class QuestionRequest,AnswerResponse model;
-    class AskRouter router;
-    class CogneeIntegration,OpenAI_Client integration;
+
+class FastAPI_App {
+    +FastAPI app
+    +APIRouter api_router
+    +add_middleware()
+    +include_router()
+    +startup_event()
+}
+
+class KnowledgeGraphManager {
+    +bool is_initialized
+    +bool is_initializing
+    +int initialization_progress
+    +load_and_cognify(Path data_dir) Dict~str, Any~
+    +get_status() Dict~str, Any~
+    +search_knowledge_graph(str question) Dict~str, Any~
+}
+
+class QuestionRequest {
+    +str question
+}
+
+class AnswerResponse {
+    +str answer
+    +List~Dict~str, str~~ sources
+}
+
+class AskRouter {
+    +APIRouter router
+    +ask_question(QuestionRequest request) Dict~str, Any~
+}
+
+class CogneeIntegration {
+    +search(query_type, query_text) Any
+    +process_text(str text) Any
+}
+
+class OpenAI_Client {
+    +generate_completion(str prompt) str
+    +create_embeddings(str text) List~float~
+}
+
+FastAPI_App --> KnowledgeGraphManager : manages
+FastAPI_App --> AskRouter : includes
+AskRouter --> QuestionRequest : uses
+AskRouter --> AnswerResponse : returns
+AskRouter --> KnowledgeGraphManager : queries
+KnowledgeGraphManager --> CogneeIntegration : uses
+CogneeIntegration --> OpenAI_Client : depends on
 ```
 
 ### Key Classes and Their Responsibilities
