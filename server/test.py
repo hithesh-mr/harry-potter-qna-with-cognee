@@ -11,7 +11,7 @@ import cognee
 async def main():
     # Read the Harry Potter book file using absolute path
     current_dir = Path(__file__).parent
-    book_path = current_dir.parent / "data" / "01 Harry Potter and the Sorcerers Stone.txt"
+    book_path = current_dir.parent / "data" / "combined_harry_potter.txt"
     
     if not book_path.exists():
         print(f"Error: File not found at {book_path.absolute()}")

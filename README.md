@@ -2,6 +2,146 @@
 
 A question-answering system that uses Cognee's knowledge graph technology to answer questions about the Harry Potter universe. This application processes the text from the Harry Potter books, builds a knowledge graph, and allows for semantic search and question-answering about the content.
 
+## System Architecture
+
+```mermaid
+graph TD
+    A[User Interface] -->|HTTP Requests| B[FastAPI Server]
+    B --> C[Knowledge Graph Manager]
+    C --> D[Cognee Engine]
+    D --> E[Vector Database]
+    B --> F[OpenAI API]
+    
+    subgraph "Client-Side"
+    A
+    end
+    
+    subgraph "Server-Side"
+    B
+    C
+    D
+    E
+    F
+    end
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#f96,stroke:#333,stroke-width:2px
+    style D fill:#6f9,stroke:#333,stroke-width:2px
+    style E fill:#9cf,stroke:#333,stroke-width:2px
+    style F fill:#f99,stroke:#333,stroke-width:2px
+```
+
+### Architecture Components
+
+1. **User Interface**
+   - Built with HTML, CSS, and JavaScript
+   - Handles user interactions and displays responses
+   - Communicates with the backend via REST API
+
+2. **FastAPI Server**
+   - Handles HTTP requests and responses
+   - Routes requests to appropriate handlers
+   - Manages authentication and API key validation
+
+3. **Knowledge Graph Manager**
+   - Orchestrates interactions with the knowledge graph
+   - Processes natural language queries
+   - Formats responses for the client
+
+4. **Cognee Engine**
+   - Processes and indexes text data
+   - Builds and maintains the knowledge graph
+   - Handles semantic search operations
+
+5. **Vector Database**
+   - Stores vector embeddings of text chunks
+   - Enables efficient similarity search
+   - Maintains relationships between entities
+
+6. **OpenAI API**
+   - Provides language model capabilities
+   - Generates embeddings for text
+   - Assists in natural language understanding and generation
+
+## 🔄 System Interaction Flow
+
+### Sequence Diagram: Question Processing
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI as User Interface
+    participant API as FastAPI Server
+    participant KGM as Knowledge Graph Manager
+    participant CE as Cognee Engine
+    participant DB as Vector Database
+    participant OA as OpenAI API
+    
+    %% Initialization Phase
+    User->>UI: Enters question and submits
+    activate UI
+    UI->>API: POST /api/ask {question: "..."}
+    activate API
+    
+    %% Knowledge Graph Processing
+    API->>KGM: process_question(question)
+    activate KGM
+    
+    %% Context Retrieval
+    KGM->>CE: find_relevant_context(question)
+    activate CE
+    CE->>DB: search_similar_embeddings(question_embedding)
+    DB-->>CE: Return top N relevant chunks
+    CE-->>KGM: Return context snippets
+    
+    %% Answer Generation
+    KGM->>OA: generate_answer(question, context)
+    activate OA
+    OA-->>KGM: Generated answer
+    deactivate OA
+    
+    %% Response Formulation
+    KGM-->>API: {"answer": "...", "sources": [...]}
+    deactivate KGM
+    
+    %% Response Delivery
+    API-->>UI: 200 OK (JSON response)
+    deactivate API
+    
+    %% UI Update
+    UI->>UI: Update chat interface
+    UI-->>User: Display answer with sources
+    deactivate UI
+```
+
+### Flow Description
+
+1. **User Submission**
+   - User enters a question in the web interface
+   - UI sends an HTTP POST request to the FastAPI server
+
+2. **Request Processing**
+   - FastAPI validates the request and extracts the question
+   - Request is forwarded to the Knowledge Graph Manager
+
+3. **Context Retrieval**
+   - Knowledge Graph Manager uses Cognee Engine to find relevant context
+   - Cognee queries the Vector Database for similar text chunks
+   - Most relevant context snippets are returned
+
+4. **Answer Generation**
+   - Context and question are sent to OpenAI API
+   - OpenAI generates a natural language answer
+
+5. **Response Formulation**
+   - Answer is formatted with source references
+   - Response is sent back through the chain
+
+6. **UI Update**
+   - Web interface updates to show the answer
+   - Sources are displayed for reference
+
 ## Features
 
 - Processes and indexes Harry Potter book text
@@ -11,47 +151,222 @@ A question-answering system that uses Cognee's knowledge graph technology to ans
 
 ## Dataset
 
-The Harry Potter book text used in this project was sourced from [Kaggle](https://www.kaggle.com/datasets/shubhammaindola/harry-potter-books?select=06+Harry+Potter+and+the+Half-Blood+Prince.txt).
-
-## Setup
 
 ### Prerequisites
-- Python 3.8 or higher
-- pip (Python package installer)
-- OpenAI API key (for LLM capabilities)
 
-### Environment Setup
+- Python 3.8+
+- Node.js (for development)
+- OpenAI API key
 
-1. Clone the repository:
+### Installation Steps
+
+1. **Clone the repository**
    ```bash
    git clone <repository-url>
    cd harry-potter-qna-with-cognee
    ```
 
-2. Create and activate a virtual environment:
+2. **Set up Python environment**
    ```bash
-   # Create a virtual environment
+   # Create and activate virtual environment
    python -m venv .venv
-
-   # Activate the virtual environment
-   # On Windows:
-   .venv\Scripts\activate
-   # On macOS/Linux:
-   source .venv/bin/activate
-   ```
-
-3. Install dependencies:
-   ```bash
+   .venv\Scripts\activate  # Windows
+   # OR
+   source .venv/bin/activate  # macOS/Linux
+   
+   # Install dependencies
    pip install -r requirements.txt
    ```
 
-4. Set up environment variables:
-   Create a `.env` file in the root directory with your API key:
+3. **Configure environment variables**
+   Create a `.env` file in the root directory:
    ```env
    LLM_API_KEY=your_openai_api_key_here
    ```
-   
-   You can get an API key from [OpenAI](https://platform.openai.com/api-keys).
+
+4. **Initialize the knowledge graph**
+   ```bash
+   python -m server.app
+   ```
+   The server will start and initialize the knowledge graph with Harry Potter data.
+
+5. **Start the development server**
+   ```bash
+   uvicorn server.app:app --reload
+   ```
+
+6. **Open the application**
+   Navigate to `http://localhost:8000` in your web browser.
+
+## 🏛️ Class Structure
+
+### System Class Diagram
+
+```mermaid
+classDiagram
+    class FastAPI_App {
+        +app: FastAPI
+        +api_router: APIRouter
+        +add_middleware()
+        +include_router()
+        +startup_event()
+    }
+    
+    class KnowledgeGraphManager {
+        +is_initialized: bool
+        +is_initializing: bool
+        +initialization_progress: int
+        +load_and_cognify(data_dir: Path) Dict[str, Any]
+        +get_status() Dict[str, Any]
+        +search_knowledge_graph(question: str) Dict[str, Any]
+    }
+    
+    class QuestionRequest {
+        +question: str
+    }
+    
+    class AnswerResponse {
+        +answer: str
+        +sources: List[Dict[str, str]]
+    }
+    
+    class AskRouter {
+        +router: APIRouter
+        +ask_question(request: QuestionRequest) Dict[str, Any]
+    }
+    
+    class CogneeIntegration {
+        +search(query_type, query_text) Any
+        +process_text(text: str) Any
+    }
+    
+    class OpenAI_Client {
+        +generate_completion(prompt: str) str
+        +create_embeddings(text: str) List[float]
+    }
+    
+    %% Relationships
+    FastAPI_App --> KnowledgeGraphManager : manages
+    FastAPI_App --> AskRouter : includes
+    AskRouter --> QuestionRequest : uses
+    AskRouter --> AnswerResponse : returns
+    AskRouter --> KnowledgeGraphManager : queries
+    KnowledgeGraphManager --> CogneeIntegration : uses
+    CogneeIntegration --> OpenAI_Client : depends on
+    
+    %% Styles
+    classDef app fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef manager fill:#bbf,stroke:#333,stroke-width:2px;
+    classDef model fill:#f96,stroke:#333,stroke-width:2px;
+    classDef router fill:#6f9,stroke:#333,stroke-width:2px;
+    classDef integration fill:#9cf,stroke:#333,stroke-width:2px;
+    
+    class FastAPI_App app;
+    class KnowledgeGraphManager manager;
+    class QuestionRequest,AnswerResponse model;
+    class AskRouter router;
+    class CogneeIntegration,OpenAI_Client integration;
+```
+
+### Key Classes and Their Responsibilities
+
+1. **FastAPI_App**
+   - Main application entry point
+   - Configures middleware and routes
+   - Manages application lifecycle
+
+2. **KnowledgeGraphManager**
+   - Manages the knowledge graph lifecycle
+   - Handles initialization and status checks
+   - Coordinates search operations
+
+3. **QuestionRequest/AnswerResponse**
+   - Data models for API request/response
+   - Ensure type safety and validation
+
+4. **AskRouter**
+   - Handles question-answering endpoint
+   - Manages request/response flow
+   - Integrates with KnowledgeGraphManager
+
+5. **CogneeIntegration**
+   - Wraps Cognee functionality
+   - Handles text processing and search
+   - Manages vector database interactions
+
+6. **OpenAI_Client**
+   - Handles communication with OpenAI API
+   - Manages API key and rate limiting
+   - Processes text generation requests
+
+## How It Works
+
+### Knowledge Graph Construction
+
+1. **Data Ingestion**: The system processes the complete text of all seven Harry Potter books
+2. **Text Processing**: Text is cleaned, tokenized, and split into meaningful chunks
+3. **Embedding Generation**: Text chunks are converted to vector embeddings using OpenAI's API
+4. **Graph Construction**: Relationships between entities are established to form a knowledge graph
+
+### Question Answering Process
+
+1. The user submits a question through the web interface
+2. The question is sent to the FastAPI backend
+3. The system searches the knowledge graph for relevant context
+4. The context and question are sent to OpenAI's API to generate an answer
+5. The answer is formatted and returned to the user
+
+## Project Structure
+
+```
+harry-potter-qna-with-cognee/
+├── client/                  # Frontend code
+│   ├── index.html           # Main HTML file
+│   ├── styles.css           # CSS styles
+│   ├── scripts.js           # Frontend JavaScript
+│   └── logos/               # Image assets
+├── server/                  # Backend code
+│   ├── app.py               # FastAPI application
+│   ├── ask.py               # Question handling
+│   ├── knowledge_graph.py   # Knowledge graph management
+│   └── __init__.py
+├── data/                    # Data files
+│   ├── combined_harry_potter.txt
+│   └── original/            # Original book texts
+├── requirements.txt         # Python dependencies
+└── README.md               # This file
+```
+
+## API Documentation
+
+### Endpoints
+
+- `GET /api/status`: Check the status of the knowledge graph
+- `POST /api/ask`: Submit a question
+  - Request body: `{"question": "Your question here"}`
+  - Response: `{"answer": "...", "sources": [...]}`
+
+## Performance Considerations
+
+- **Initialization**: The knowledge graph takes time to initialize (5-10 minutes) as it processes all seven books
+- **Response Time**: Typical response time is 2-5 seconds depending on query complexity
+- **Caching**: Recent queries are cached to improve performance
+
+## Security
+
+- API keys are never exposed to the client
+- All communications are encrypted (HTTPS)
+- Rate limiting is implemented to prevent abuse
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- J.K. Rowling for the Harry Potter series
+- OpenAI for their powerful language models
+- The Cognee team for their knowledge graph technology
 
 ## Usage
 
