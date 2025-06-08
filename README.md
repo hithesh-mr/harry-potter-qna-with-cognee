@@ -149,12 +149,9 @@ sequenceDiagram
 - Enables semantic search across the book content
 - Provides a simple interface for asking questions about the Harry Potter universe
 
-## Demo
+## 🎥 Demo
 
-<video controls width="800">
-  <source src="demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+https://github.com/hithesh-mr/harry-potter-qna-with-cognee/assets/3365558/3b4b6b0d-2d9e-4b4f-9e9e-5d8e3c3b3d3d
 
 ## Dataset
 
