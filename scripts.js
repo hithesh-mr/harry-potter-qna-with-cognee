@@ -1,7 +1,7 @@
 // Configuration
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:8080' // Development
-  : 'https://hithesh-mr.github.io/harry-potter-qna-with-cognee'; // Production
+  : 'https://harry-potter-qna-with-cognee.onrender.com'; // Production (Replace with your actual Render URL)
 
 const API_ENDPOINT = `${API_BASE_URL}/api`;
 
