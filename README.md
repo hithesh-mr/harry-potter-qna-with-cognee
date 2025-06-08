@@ -149,8 +149,17 @@ sequenceDiagram
 - Enables semantic search across the book content
 - Provides a simple interface for asking questions about the Harry Potter universe
 
+## Demo
+
+<video src="demo.mp4" controls width="800">
+  Your browser does not support the video tag.
+</video>
+
 ## Dataset
 
+The application uses the complete text from all seven Harry Potter books as its knowledge base. The text is processed and indexed using [Cognee](https://www.cognee.ai/), an open-source framework for building and managing knowledge graphs. For more technical details about the underlying technology, you can read the [Cognee research paper](https://arxiv.org/abs/2505.24478).
+
+The text is processed and indexed to build a comprehensive knowledge graph of the Harry Potter universe.
 
 ### Prerequisites
 
@@ -158,7 +167,7 @@ sequenceDiagram
 - Node.js (for development)
 - OpenAI API key
 
-## 🚀 Installation Steps
+## 🚀 Getting Started
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -169,7 +178,7 @@ sequenceDiagram
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/harry-potter-qna-with-cognee.git
+   git clone https://github.com/hithesh-mr/harry-potter-qna-with-cognee.git
    cd harry-potter-qna-with-cognee
    ```
 
