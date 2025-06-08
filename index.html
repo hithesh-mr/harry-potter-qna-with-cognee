@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harry Potter Q&A with Cognee</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hat-wizard"></i>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active" data-section="home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </li>
+                <li class="nav-item" data-section="research">
+                    <i class="fas fa-book"></i>
+                    <span>Research</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header>
+                <div class="header-content">
+                    <div class="header-brand">
+                        <img src="logos/harry-potter-logo.png" alt="Harry Potter" class="harry-potter-logo">
+                        <div class="header-text">
+                            <h1>Q&A</h1>
+                            <p class="subtitle">Ask questions about the Wizarding World</p>
+                        </div>
+                    </div>
+                    <button id="open-api-modal" class="api-modal-btn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/OpenAI_Logo.svg/1024px-OpenAI_Logo.svg.png" alt="OpenAI" class="openai-logo">
+                        <span>API Key</span>
+                    </button>
+                </div>
+                <div id="api-status" class="api-status"></div>
+            </header>
+
+        <section class="research-section">
+            <h2>Research: Cognee AI Knowledge Graph Data Retrieval vs RAG</h2>
+            <p>With the rise of Large Language Models (LLMs), organizations are increasingly leveraging intelligent systems for question answering, semantic search, and enterprise knowledge management. This application is built using Cognee, a framework that optimizes the interface between knowledge graphs and LLMs.</p>
+            
+            <h3>Key Research Paper</h3>
+            <p>"Optimizing the Interface Between Knowledge Graphs and LLMs for Complex Reasoning"</p>
+            <p>Read the full paper: <a href="https://arxiv.org/pdf/2505.24478" target="_blank">PDF Version</a> | <a href="https://arxiv.org/abs/2505.24478" target="_blank">Abstract and Details</a></p>
+            
+            <h2>Comparative Study: Cognee AI Knowledge Graph vs. RAG</h2>
+            <p>This application leverages the power of <a href="https://www.cognee.ai/" target="_blank" class="cognee-link">Cognee AI</a>'s Knowledge Graph technology to provide accurate and contextual answers to your Harry Potter universe questions. Below is a comparative analysis of Knowledge Graph-based retrieval versus Retrieval-Augmented Generation (RAG):</p>
+            
+            <h3>Cognee AI's Knowledge Graph-Based Retrieval</h3>
+            <h4>What is Cognee AI?</h4>
+            <p>Cognee AI is an enterprise AI platform that enables conversational AI over private documents using knowledge graphs. It transforms unstructured and structured data (PDFs, spreadsheets, web pages, etc.) into a graph-based representation, where nodes represent entities (people, places, events, products, etc.) and edges represent relationships.</p>
+            
+            <h4>Key Components</h4>
+            <ul>
+                <li><strong>Information Extraction:</strong> NLP techniques extract entities, facts, and relationships from raw documents.</li>
+                <li><strong>Graph Construction:</strong> These entities and relations are modeled as a Knowledge Graph (KG).</li>
+                <li><strong>Semantic Query Interface:</strong> Users can ask questions in natural language. The system maps the question to a graph traversal or semantic query.</li>
+                <li><strong>Explainable Answers:</strong> Unlike black-box LLM outputs, Cognee returns answers with explicit paths through the graph (facts and references).</li>
+            </ul>
+            
+            <h4>Advantages</h4>
+            <ul>
+                <li><strong>Explainability:</strong> Users can trace the answer to its factual origin via the graph.</li>
+                <li><strong>High precision:</strong> The graph enforces entity disambiguation and structured linking.</li>
+                <li><strong>Enterprise alignment:</strong> Ideal for compliance-heavy environments needing traceability.</li>
+            </ul>
+            
+            <h3>RAG: Retrieval-Augmented Generation</h3>
+            <h4>What is RAG?</h4>
+            <p>RAG is a framework where an LLM is combined with a retriever that pulls relevant documents or passages (typically using vector embeddings). The LLM then conditions its generation on this retrieved context.</p>
+            
+            <h4>Key Components</h4>
+            <ul>
+                <li><strong>Retriever:</strong> Fetches top-k relevant documents from a vector database (like FAISS, Weaviate, Pinecone).</li>
+                <li><strong>Generator:</strong> A pretrained LLM (e.g., GPT, BERT variants) generates a response based on the question and retrieved context.</li>
+                <li><strong>Workflow:</strong> Input → Vector Search → Retrieved Documents + Question → LLM → Output</li>
+            </ul>
+            
+            <h4>Advantages</h4>
+            <ul>
+                <li><strong>Fast and general-purpose:</strong> Works out-of-the-box with any corpus.</li>
+                <li><strong>Low setup cost:</strong> No need for complex schema or graph construction.</li>
+                <li><strong>End-to-end differentiable:</strong> Can be fine-tuned as a single pipeline.</li>
+            </ul>
+        </section>
+            <main>
+                <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Messages will be dynamically added here -->
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="user-input" placeholder="Ask about Harry Potter..." autofocus>
+                    <button id="send-button" title="Send message">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="project-summary">
+                <h2>About This Project</h2>
+                <p>Welcome to the Harry Potter Q&A Assistant! Ask any question about the Harry Potter series and get accurate answers powered by AI. The knowledge base includes all seven books, from <em>Philosopher's Stone</em> to <em>Deathly Hallows</em>.</p>
+                
+                <div class="project-links">
+                    <p>This project is open source! Check out the code on <a href="https://github.com/hithesh-mr/harry-potter-qna-with-cognee" target="_blank">GitHub</a>.</p>
+                </div>
+            </div>
+            </main>
+
+            <footer>
+                <div class="footer-content">
+                    <div class="footer-text">
+                        <span>Developed by Hithesh M R</span>
+                        <a href="https://github.com/hithesh-mr" target="_blank" class="github-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- API Key Modal -->
+    <div id="api-key-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>OpenAI API Key</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>To use this application, you need an OpenAI API key. Your API key is stored locally in your browser and only sent to the OpenAI API.</p>
+                <div class="form-group">
+                    <label for="api-key">OpenAI API Key</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="api-key" placeholder="sk-..." autocomplete="off" />
+                    </div>
+                    <p class="hint">Your API key is stored locally and never sent to our servers.</p>
+                </div>
+                <div class="form-group">
+                    <button id="save-api-key" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save API Key
+                    </button>
+                    <button id="clear-api-key" class="btn btn-link">
+                        <i class="fas fa-trash"></i> Clear API Key
+                    </button>
+                </div>
+                <div id="api-status" class="api-status"></div>
+                <div class="api-help">
+                    <h4>How to get an API key:</h4>
+                    <ol>
+                        <li>Go to <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">OpenAI API Keys</a></li>
+                        <li>Sign in or create an account</li>
+                        <li>Create a new secret key</li>
+                        <li>Copy and paste it here</li>
+                    </ol>
+                    <p class="note">Note: You'll need to have a valid OpenAI account with available credits.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="scripts.js"></script>
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = {
+                'home': document.querySelector('main'),
+                'research': document.querySelector('.research-section')
+            };
+
+            // Show home section by default
+            sections['home'].style.display = 'block';
+            sections['research'].style.display = 'none';
+
+            // Handle navigation
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.getAttribute('data-section');
+                    
+                    // Update active state
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected section
+                    Object.values(sections).forEach(s => s.style.display = 'none');
+                    sections[section].style.display = 'block';
+                });
+            });
+
+            // Modal functionality
+            const modal = document.getElementById('api-key-modal');
+            const btn = document.getElementById('open-api-modal');
+            const span = document.querySelector('.close-modal');
+
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+
+            span.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
