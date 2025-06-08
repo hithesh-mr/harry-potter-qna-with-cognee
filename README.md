@@ -151,7 +151,7 @@ sequenceDiagram
 
 ## 🎥 Demo
 
-https://github.com/hithesh-mr/harry-potter-qna-with-cognee/assets/3365558/3b4b6b0d-2d9e-4b4f-9e9e-5d8e3c3b3d3d
+https://github.com/user-attachments/assets/61f59c96-42e9-4483-beb3-03c7139b94e9
 
 ## Dataset
 
