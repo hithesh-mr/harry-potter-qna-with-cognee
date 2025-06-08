@@ -30,6 +30,7 @@ const apiKeyForm = document.getElementById('api-key-form');
 document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     loadApiKey();
+    initializeChat();
     checkInitializationStatus();
 });
 
@@ -506,14 +507,23 @@ function setupEventListeners() {
 
 // Initialize chat
 function initializeChat() {
-  // Add welcome message
-  addMessage(
-    'Welcome to the Harry Potter Q&A! ' +
-    'I can answer questions about the Harry Potter universe. ' +
-    'Please enter your OpenAI API key to get started.\n' +
-    'You can get an API key from [OpenAI](https://platform.openai.com/api-keys).',
-    MESSAGE_TYPES.INFO,
-  );
+    // Clear any existing messages
+    chatMessages.innerHTML = '';
+    
+    // Add welcome message with better formatting
+    const welcomeMessage = `Welcome to the Harry Potter Q&A Assistant! 
+
+I'm your magical guide to the Wizarding World. I can help you with:
+
+• Character backgrounds and relationships  
+• Spells and their effects  
+• Magical creatures and their lore  
+• Plot details from all seven books  
+• And much more!
+
+To get started, please enter your **OpenAI API key** using the button in the top-right corner.`;
+    
+    addMessage(welcomeMessage, MESSAGE_TYPES.INFO);
   
   // Disable chat input until API key is set
   enableChatInput(false);
